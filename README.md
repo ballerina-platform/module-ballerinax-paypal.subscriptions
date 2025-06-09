@@ -1,8 +1,6 @@
-# Ballerina Paypal.subscriptions connector
+# Ballerina Paypal Subscriptions connector
 
 [![Build](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/actions/workflows/ci.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/actions/workflows/ci.yml)
-[![Trivy](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/actions/workflows/trivy-scan.yml)
-[![GraalVM Check](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/actions/workflows/build-with-bal-test-graalvm.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/actions/workflows/build-with-bal-test-graalvm.yml)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-paypal.subscriptions.svg)](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/commits/master)
 [![GitHub Issues](https://img.shields.io/github/issues/ballerina-platform/ballerina-library/module/paypal.subscriptions.svg?label=Open%20Issues)](https://github.com/ballerina-platform/ballerina-library/labels/module%paypal.subscriptions)
 
@@ -20,7 +18,7 @@
 
 ## Examples
 
-The `Paypal.subscriptions` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/module-ballerinax-paypal.subscriptions/tree/main/examples/), covering the following use cases:
+The `Paypal Subscriptions` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/module-ballerinax-paypal.subscriptions/tree/main/examples/), covering the following use cases:
 
 [//]: # (TODO: Add examples)
 
@@ -28,7 +26,7 @@ The `Paypal.subscriptions` connector provides practical examples illustrating us
 
 ### Setting up the prerequisites
 
-1. Download and install Java SE Development Kit (JDK) version 17. You can download it from either of the following sources:
+1. Download and install Java SE Development Kit (JDK) version 21. You can download it from either of the following sources:
 
     * [Oracle JDK](https://www.oracle.com/java/technologies/downloads/)
     * [OpenJDK](https://adoptium.net/)
