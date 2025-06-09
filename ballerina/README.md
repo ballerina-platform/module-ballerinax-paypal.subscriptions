@@ -12,6 +12,6 @@
 
 ## Examples
 
-The `Paypal.subscriptions` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/module-ballerinax-paypal.subscriptions/tree/main/examples/), covering the following use cases:
+The `Paypal Subscriptions` connector provides practical examples illustrating usage in various scenarios. Explore these [examples](https://github.com/module-ballerinax-paypal.subscriptions/tree/main/examples/), covering the following use cases:
 
 [//]: # (TODO: Add examples)
