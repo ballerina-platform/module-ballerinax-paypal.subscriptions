@@ -59,7 +59,7 @@ function createProduct() returns string|error {
 
     // Make API call to create product
     http:Response response = check productClient->/products.post({
-        "id": timestamp.toString(), // Convert int to string
+        id: timestamp.toString(), // Convert int to string
         name: "T-Shirt",
         "type": "PHYSICAL",
         description: "Cotton XL",
