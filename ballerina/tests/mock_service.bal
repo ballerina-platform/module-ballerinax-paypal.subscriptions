@@ -50,7 +50,7 @@ http:Service mockService = service object {
     resource function post plans(@http:Payload PlanRequestPOST payload) returns Plan|error {
         return {
             name: payload.name,
-            id: "P-1234567890",
+            id: "P-20250618",
             status: payload.status,
             productId: payload.productId,
             "billing_cycles": [
@@ -100,6 +100,17 @@ http:Service mockService = service object {
             "create_time": "2025-06-16T10:53:00Z",
             links: [{href: string `/v1/billing/plans/${planId}`, rel: "self", method: "GET"}]
         };
+    }
+
+    # Update plan by ID
+    #
+    # + planId - The ID of the plan to update
+    # + payload - The plan request payload
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body 
+    resource function patch plans/[string planId](@http:Payload PatchRequest payload) returns http:Ok|error? {
+        log:printInfo("Mock service received patch request for plan ID: " + planId);
+        log:printInfo("Patch payload: " + payload.toString());
+        return {};
     }
 
 };
