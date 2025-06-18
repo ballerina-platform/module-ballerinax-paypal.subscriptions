@@ -41,6 +41,9 @@ function testListPlans() returns error? {
 
 // Function to create a product
 function createProduct() returns string|error {
+    if !isLiveServer {
+        return "PRD-TEMP";
+    }
     // Generate timestamp for unique ID
     time:Utc currentTime = time:utcNow();
     int timestamp = currentTime[0]; // This gives you Unix timestamp like 1750142621
