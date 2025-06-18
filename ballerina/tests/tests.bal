@@ -7,6 +7,7 @@ import ballerina/time;
 configurable string serviceUrl = isLiveServer ? "https://api-m.sandbox.paypal.com/v1/billing" : "http://localhost:9090/v1/billing";
 configurable string clientId = ?;
 configurable string clientSecret = ?;
+string testPlanId = "";
 
 ConnectionConfig config = {
     auth: {
@@ -126,4 +127,17 @@ function testCreatePlan() returns error? {
     Plan createdPlan = check paypal->/plans.post(payload);
     //io:println("Created Plan: ", createdPlan.toString());
     test:assertTrue(createdPlan.id is string, "Created plan should have an ID");
+    testPlanId = <string>createdPlan.id;
 }
+
+# Test to get a specific plan
+@test:Config {
+    groups: ["live_tests", "mock_tests"],
+    dependsOn: [testCreatePlan]
+}
+function testGetPlan() returns error? {
+    Plan plan = check paypal->/plans/[testPlanId].get();
+    // io:println("Retrieved Plan: ", plan.toString());
+    test:assertEquals(plan.id, testPlanId, "Retrieved plan ID should match the requested ID");
+}
+
