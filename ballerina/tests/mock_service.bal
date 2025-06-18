@@ -73,6 +73,35 @@ http:Service mockService = service object {
         };
     }
 
+    # Get plan by ID
+    # + planId - The ID of the plan to retrieve
+    # + return - A successful request returns the HTTP 200 OK status code with a JSON response body that shows billing plan details
+    resource function get plans/[string planId]() returns Plan|error {
+        return {
+            name: "Basic Plan",
+            id: planId, // Return the same plan ID that was requested
+            status: "ACTIVE",
+            "product_id": "PROD-1234567890",
+            "billing_cycles": [
+                {
+                    sequence: 1,
+                    tenure_type: "REGULAR",
+                    total_cycles: 0,
+                    frequency: {interval_unit: "MONTH", interval_count: 1},
+                    pricing_scheme: {fixed_price: {currency_code: "USD", value: "10.00"}}
+                }
+            ],
+            "payment_preferences": {
+                auto_bill_outstanding: true,
+                setup_fee: {currency_code: "USD", value: "0.00"},
+                setup_fee_failure_action: "CANCEL",
+                payment_failure_threshold: 3
+            },
+            "create_time": "2025-06-16T10:53:00Z",
+            links: [{href: string `/v1/billing/plans/${planId}`, rel: "self", method: "GET"}]
+        };
+    }
+
 };
 
 function init() returns error? {
