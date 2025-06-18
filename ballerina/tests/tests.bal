@@ -141,3 +141,22 @@ function testGetPlan() returns error? {
     test:assertEquals(plan.id, testPlanId, "Retrieved plan ID should match the requested ID");
 }
 
+# Test to update a plan
+@test:Config {
+    groups: ["live_tests", "mock_tests"],
+    dependsOn: [testCreatePlan]
+}
+function testUpdatePlan() returns error? {
+    PatchRequest payload =
+        [
+        {
+            op: "replace",
+            path: "/name",
+            value: "Updated Fresh Clean Tees Plan"
+        }
+    ];
+
+    error? response = check paypal->/plans/[testPlanId].patch(payload);
+    test:assertTrue(response is (), "Response should be empty on successful patch");
+}
+
