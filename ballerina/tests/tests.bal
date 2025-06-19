@@ -2,12 +2,12 @@ import ballerina/http;
 import ballerina/io;
 import ballerina/test;
 import ballerina/time;
-import ballerina/toml;
 
 // Define configurable variables
 configurable string serviceUrl = isLiveServer ? "https://api-m.sandbox.paypal.com/v1/billing" : "http://localhost:9090/v1/billing";
 configurable string clientId = ?;
 configurable string clientSecret = ?;
+string testProductId = "";
 string testPlanId = "";
 
 ConnectionConfig config = {
@@ -29,7 +29,7 @@ function initClient() returns Client|error {
     return new Client(config, serviceUrl);
 }
 
-# # Test cases for PayPal Billing Plans API
+# # Test cases for PayPal Billing Plans Connectors
 #
 # Test to list all plans
 @test:Config {
@@ -37,16 +37,18 @@ function initClient() returns Client|error {
     dependsOn: [testCreatePlan]
 }
 function testListPlans() returns error? {
-    PlanCollection response = check paypal->/plans.get();
+    plan_collection response = check paypal->/plans();
     // io:println("List Plans Response: " + response.toString());
     test:assertTrue(response?.plans !is ());
 
 }
 
 // Function to create a product
-function createProduct() returns string|error {
+@test:BeforeSuite
+function createProduct() returns error? {
     if !isLiveServer {
-        return "PRD-TEMP";
+        testProductId = "PRD-TEMP";
+        return;
     }
     // Generate timestamp for unique ID
     time:Utc currentTime = time:utcNow();
@@ -75,7 +77,7 @@ function createProduct() returns string|error {
     json responseJson = check response.getJsonPayload();
     string productId = check responseJson.id;
     // io:println("Created Product ID: " + productId);
-    return productId;
+    testProductId = productId;
 }
 
 # Test to create a new plan
@@ -83,51 +85,49 @@ function createProduct() returns string|error {
     groups: ["live_tests", "mock_tests"]
 }
 function testCreatePlan() returns error? {
-    string productId = check createProduct();
-
-    PlanRequestPOST payload = {
-        productId: productId,
+    plan_request_POST payload = {
+        product_id: testProductId,
         name: "Fresh Clean Tees Plan",
         status: "ACTIVE",
-        billingCycles: [
+        billing_cycles: [
             {
                 frequency: {
-                    intervalUnit: "MONTH",
-                    intervalCount: 1
+                    interval_unit: "MONTH",
+                    interval_count: 1
                 },
-                tenureType: "TRIAL",
+                tenure_type: "TRIAL",
                 sequence: 1,
-                totalCycles: 1,
-                pricingScheme: {
-                    fixedPrice: {
+                total_cycles: 1,
+                pricing_scheme: {
+                    fixed_price: {
                         value: "1",
-                        currencyCode: "USD"
+                        currency_code: "USD"
                     }
                 }
             },
             {
                 frequency: {
-                    intervalUnit: "MONTH",
-                    intervalCount: 1
+                    interval_unit: "MONTH",
+                    interval_count: 1
                 },
-                tenureType: "REGULAR",
+                tenure_type: "REGULAR",
                 sequence: 2,
-                totalCycles: 12,
-                pricingScheme: {
-                    fixedPrice: {
+                total_cycles: 12,
+                pricing_scheme: {
+                    fixed_price: {
                         value: "44",
-                        currencyCode: "USD"
+                        currency_code: "USD"
                     }
                 }
             }
         ],
-        paymentPreferences: {
-            autoBillOutstanding: true,
-            setupFeeFailureAction: "CONTINUE",
-            paymentFailureThreshold: 3
+        payment_preferences: {
+            auto_bill_outstanding: true,
+            setup_fee_failure_action: "CONTINUE",
+            payment_failure_threshold: 3
         }
     };
-    Plan createdPlan = check paypal->/plans.post(payload);
+    plan createdPlan = check paypal->/plans.post(payload);
     io:println("Plan created successfully: ", createdPlan.id);
     test:assertTrue(createdPlan.id is string, "Created plan should have an ID");
     testPlanId = <string>createdPlan.id;
@@ -139,9 +139,9 @@ function testCreatePlan() returns error? {
     dependsOn: [testCreatePlan]
 }
 function testGetPlan() returns error? {
-    Plan plan = check paypal->/plans/[testPlanId].get();
+    plan plan = check paypal->/plans/[testPlanId].get();
     test:assertEquals(plan.id, testPlanId, "Retrieved plan ID should match the requested ID");
-    io:println("Retrieved Plan: ", plan.toString());
+    //io:println("Retrieved Plan: ", plan.toString());
 }
 
 # Test to update a plan
@@ -152,7 +152,7 @@ function testGetPlan() returns error? {
 
 }
 function testUpdatePlan() returns error? {
-    PatchRequest payload =
+    patch_request payload =
         [
         {
             op: "replace",
@@ -198,23 +198,23 @@ function testActivatePlan() returns error? {
     after: testGetPlan
 }
 function testUpdatePricingSchemes() returns error? {
-    UpdatePricingSchemesListRequest payload = {
-        pricingSchemes: [
+    update_pricing_schemes_list_request payload = {
+        pricing_schemes: [
             {
-                billingCycleSequence: 1,
-                pricingScheme: {
-                    fixedPrice: {
+                billing_cycle_sequence: 1,
+                pricing_scheme: {
+                    fixed_price: {
                         value: "120",
-                        currencyCode: "USD"
+                        currency_code: "USD"
                     }
                 }
             },
             {
-                billingCycleSequence: 2,
-                pricingScheme: {
-                    fixedPrice: {
+                billing_cycle_sequence: 2,
+                pricing_scheme: {
+                    fixed_price: {
                         value: "555",
-                        currencyCode: "USD"
+                        currency_code: "USD"
                     }
                 }
             }
