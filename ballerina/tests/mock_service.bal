@@ -44,7 +44,7 @@ http:Service mockService = service object {
     }
 
     # Create plan
-    #
+
     # + payload - The plan request payload
     # + return - A successful request returns the HTTP 200 OK status code with a JSON response body that shows billing plan details
     resource function post plans(@http:Payload PlanRequestPOST payload) returns Plan|error {
@@ -74,6 +74,7 @@ http:Service mockService = service object {
     }
 
     # Get plan by ID
+    #
     # + planId - The ID of the plan to retrieve
     # + return - A successful request returns the HTTP 200 OK status code with a JSON response body that shows billing plan details
     resource function get plans/[string planId]() returns Plan|error {
@@ -103,7 +104,6 @@ http:Service mockService = service object {
     }
 
     # Update plan by ID
-    #
     # + planId - The ID of the plan to update
     # + payload - The plan request payload
     # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body 
@@ -113,6 +113,34 @@ http:Service mockService = service object {
         return {};
     }
 
+    # Deactivate plan
+    #
+    # + id - The ID of the subscription
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body 
+    resource function post plans/[string id]/deactivate() returns http:Ok|error {
+        log:printInfo("Mock service received deactivate request for plan ID: " + id);
+        return {};
+    }
+
+    # Activate plan
+    #
+    # + id - The ID of the subscription
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body 
+    resource function post plans/[string id]/activate() returns http:Ok|error {
+        log:printInfo("Mock service received activate request for plan ID: " + id);
+        return {};
+    }
+
+    # Update pricing
+    #
+    # + id - The ID of the subscription
+    # + payload - The request payload containing the pricing schemes to update
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body 
+    resource function post plans/[string id]/update\-pricing\-schemes(@http:Payload UpdatePricingSchemesListRequest payload) returns http:Ok|error {
+        log:printInfo("Mock service received update pricing request for plan ID: " + id);
+        log:printInfo("Update pricing payload: " + payload.toString());
+        return {};
+    }
 };
 
 function init() returns error? {
