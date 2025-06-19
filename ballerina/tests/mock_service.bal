@@ -10,7 +10,7 @@ http:Service mockService = service object {
     # List plans
     #
     # + return - A successful request returns the HTTP 200 OK status code with a JSON response body that lists billing plans
-    resource function get plans() returns PlanCollection|error {
+    resource function get plans() returns plan_collection|error {
         return {
             plans: [
                 {
@@ -47,12 +47,12 @@ http:Service mockService = service object {
 
     # + payload - The plan request payload
     # + return - A successful request returns the HTTP 200 OK status code with a JSON response body that shows billing plan details
-    resource function post plans(@http:Payload PlanRequestPOST payload) returns Plan|error {
+    resource function post plans(@http:Payload plan_request_POST payload) returns plan|error {
         return {
             name: payload.name,
             id: "P-20250618",
             status: payload.status,
-            productId: payload.productId,
+            product_id: payload.product_id,
             "billing_cycles": [
                 {
                     sequence: 1,
@@ -77,7 +77,7 @@ http:Service mockService = service object {
     #
     # + planId - The ID of the plan to retrieve
     # + return - A successful request returns the HTTP 200 OK status code with a JSON response body that shows billing plan details
-    resource function get plans/[string planId]() returns Plan|error {
+    resource function get plans/[string planId]() returns plan|error {
         return {
             name: "Basic Plan",
             id: planId, // Return the same plan ID that was requested
@@ -107,7 +107,7 @@ http:Service mockService = service object {
     # + planId - The ID of the plan to update
     # + payload - The plan request payload
     # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body 
-    resource function patch plans/[string planId](@http:Payload PatchRequest payload) returns http:Ok|error? {
+    resource function patch plans/[string planId](@http:Payload patch_request payload) returns http:Ok|error? {
         log:printInfo("Mock service received patch request for plan ID: " + planId);
         log:printInfo("Patch payload: " + payload.toString());
         return {};
@@ -136,7 +136,7 @@ http:Service mockService = service object {
     # + id - The ID of the subscription
     # + payload - The request payload containing the pricing schemes to update
     # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body 
-    resource function post plans/[string id]/update\-pricing\-schemes(@http:Payload UpdatePricingSchemesListRequest payload) returns http:Ok|error {
+    resource function post plans/[string id]/update\-pricing\-schemes(@http:Payload update_pricing_schemes_list_request payload) returns http:Ok|error {
         log:printInfo("Mock service received update pricing request for plan ID: " + id);
         log:printInfo("Update pricing payload: " + payload.toString());
         return {};
