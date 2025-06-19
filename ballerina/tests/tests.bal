@@ -2,6 +2,7 @@ import ballerina/http;
 import ballerina/io;
 import ballerina/test;
 import ballerina/time;
+import ballerina/toml;
 
 // Define configurable variables
 configurable string serviceUrl = isLiveServer ? "https://api-m.sandbox.paypal.com/v1/billing" : "http://localhost:9090/v1/billing";
@@ -28,6 +29,8 @@ function initClient() returns Client|error {
     return new Client(config, serviceUrl);
 }
 
+# # Test cases for PayPal Billing Plans API
+#
 # Test to list all plans
 @test:Config {
     groups: ["live_tests", "mock_tests"],
@@ -125,7 +128,7 @@ function testCreatePlan() returns error? {
         }
     };
     Plan createdPlan = check paypal->/plans.post(payload);
-    //io:println("Created Plan: ", createdPlan.toString());
+    io:println("Plan created successfully: ", createdPlan.id);
     test:assertTrue(createdPlan.id is string, "Created plan should have an ID");
     testPlanId = <string>createdPlan.id;
 }
@@ -137,14 +140,16 @@ function testCreatePlan() returns error? {
 }
 function testGetPlan() returns error? {
     Plan plan = check paypal->/plans/[testPlanId].get();
-    // io:println("Retrieved Plan: ", plan.toString());
     test:assertEquals(plan.id, testPlanId, "Retrieved plan ID should match the requested ID");
+    io:println("Retrieved Plan: ", plan.toString());
 }
 
 # Test to update a plan
 @test:Config {
     groups: ["live_tests", "mock_tests"],
-    dependsOn: [testCreatePlan]
+    dependsOn: [testCreatePlan],
+    after: testGetPlan
+
 }
 function testUpdatePlan() returns error? {
     PatchRequest payload =
@@ -158,5 +163,64 @@ function testUpdatePlan() returns error? {
 
     error? response = check paypal->/plans/[testPlanId].patch(payload);
     test:assertTrue(response is (), "Response should be empty on successful patch");
+    io:println("Plan updated successfully: " + testPlanId);
 }
 
+# Test to deactivate a plan
+
+@test:Config {
+    groups: ["live_tests", "mock_tests"],
+    dependsOn: [testCreatePlan],
+    after: testGetPlan
+}
+function testDeactivatePlan() returns error? {
+    error? response = check paypal->/plans/[testPlanId]/deactivate.post();
+    test:assertTrue(response is (), "Response should be empty on successful deactivation");
+    io:println("Plan deactivated successfully: " + testPlanId);
+}
+
+# Test to activate a plan
+@test:Config {
+    groups: ["live_tests", "mock_tests"],
+    dependsOn: [testCreatePlan, testDeactivatePlan],
+    after: testGetPlan
+}
+function testActivatePlan() returns error? {
+    error? response = check paypal->/plans/[testPlanId]/activate.post();
+    test:assertTrue(response is (), "Response should be empty on successful activation");
+    io:println("Plan activated successfully: " + testPlanId);
+}
+
+# Test to update pricing schemes
+@test:Config {
+    groups: ["live_tests", "mock_tests"],
+    dependsOn: [testCreatePlan, testGetPlan],
+    after: testGetPlan
+}
+function testUpdatePricingSchemes() returns error? {
+    UpdatePricingSchemesListRequest payload = {
+        pricingSchemes: [
+            {
+                billingCycleSequence: 1,
+                pricingScheme: {
+                    fixedPrice: {
+                        value: "120",
+                        currencyCode: "USD"
+                    }
+                }
+            },
+            {
+                billingCycleSequence: 2,
+                pricingScheme: {
+                    fixedPrice: {
+                        value: "555",
+                        currencyCode: "USD"
+                    }
+                }
+            }
+        ]
+    };
+    error? response = check paypal->/plans/[testPlanId]/update\-pricing\-schemes.post(payload);
+    test:assertTrue(response is (), "Response should be empty on successful update of pricing schemes");
+    io:println("Pricing schemes updated successfully for plan: " + testPlanId);
+}
