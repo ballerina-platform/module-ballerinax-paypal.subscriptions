@@ -65,8 +65,8 @@ Following the latest Ballerina connector guidelines, apply these changes **after
 
 The following command was used to generate the Ballerina client from the OpenAPI specification. The command should be executed from the repository root directory.
 
-```bash
-bal openapi -i docs/spec/openapi.yaml --mode client -o ballerina
-```
+> Note: The flattened OpenAPI specification must be used for Ballerina client generation to prevent type-inclusion [issue](https://github.com/ballerina-platform/ballerina-lang/issues/38535#issuecomment-2973521948) in the generated types.
 
-Note: The license year is hardcoded to 2025, change if necessary.
+```bash
+bal openapi -i docs/spec/openapi.json --mode client -o ballerina
+```
