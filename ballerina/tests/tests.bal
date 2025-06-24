@@ -66,7 +66,7 @@ function createProduct() returns error? {
     http:Response response = check productClient->/products.post({
         id: timestamp.toString(),
         name: "T-Shirt",
-        "type": "PHYSICAL",
+        'type: "PHYSICAL",
         description: "Cotton XL",
         category: "CLOTHING",
         image_url: string `https://example.com/gallery/images/${timestamp}.jpg`,
@@ -140,13 +140,10 @@ function testGetPlan() returns error? {
 
 @test:Config {
     groups: ["live_tests", "mock_tests"],
-    dependsOn: [testCreatePlan],
-    after: testGetPlan
-
+    dependsOn: [testCreatePlan]
 }
 function testUpdatePlan() returns error? {
-    patch_request payload =
-        [
+    patch_request payload = [
         {
             op: "replace",
             path: "/name",
@@ -159,8 +156,7 @@ function testUpdatePlan() returns error? {
 
 @test:Config {
     groups: ["live_tests", "mock_tests"],
-    dependsOn: [testCreatePlan],
-    after: testGetPlan
+    dependsOn: [testCreatePlan]
 }
 function testDeactivatePlan() returns error? {
     error? response = check paypal->/plans/[testPlanId]/deactivate.post();
@@ -169,8 +165,7 @@ function testDeactivatePlan() returns error? {
 
 @test:Config {
     groups: ["live_tests", "mock_tests"],
-    dependsOn: [testCreatePlan, testDeactivatePlan],
-    after: testGetPlan
+    dependsOn: [testCreatePlan, testDeactivatePlan]
 }
 function testActivatePlan() returns error? {
     error? response = check paypal->/plans/[testPlanId]/activate.post();
@@ -179,8 +174,7 @@ function testActivatePlan() returns error? {
 
 @test:Config {
     groups: ["live_tests", "mock_tests"],
-    dependsOn: [testCreatePlan, testGetPlan],
-    after: testGetPlan
+    dependsOn: [testCreatePlan, testGetPlan]
 }
 function testUpdatePricingSchemes() returns error? {
     update_pricing_schemes_list_request payload = {
