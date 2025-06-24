@@ -327,8 +327,7 @@ function testSuspendSubscription() returns error? {
     subscription_suspend_request payload = {
         reason: "Item out of stock"
     };
-    error? response = check paypal->/subscriptions/[testActivatedSubscriptionId]/suspend.post(payload);
-    test:assertTrue(response is (), "Response should be empty on successful suspension");
+    check paypal->/subscriptions/[testActivatedSubscriptionId]/suspend.post(payload);
 }
 
 @test:Config {
