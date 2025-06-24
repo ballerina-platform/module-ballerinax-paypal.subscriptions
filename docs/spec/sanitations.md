@@ -11,55 +11,19 @@ This document records the sanitation done on top of the official OpenAPI specifi
 
 Following the latest Ballerina connector guidelines, apply these changes **after flattening the OpenAPI specification and without aligning the spec**:
 
-### 1. Update `servers` URLs to include `/v1/billing`
+### 1. Change the `url` property of the servers object
 
-**Before:**
-```json
-"servers" : [ {
-    "url" : "https://api-m.sandbox.paypal.com",
-    "description" : "PayPal Sandbox Environment"
-  }, {
-    "url" : "https://api-m.paypal.com",
-    "description" : "PayPal Live Environment"
-  } ],
-```
+- **Original:** `https://api-m.sandbox.paypal.com`
+- **Updated:** `https://api-m.sandbox.paypal.com/v1/billing`
+- **Reason:** This change ensures that all API paths are relative to the versioned base URL (`/v1/billing`), which improves the consistency and usability of the APIs.
 
-**After:**
-```json
-"servers" : [ {
-    "url" : "https://api-m.sandbox.paypal.com/v1/billing",
-    "description" : "PayPal Sandbox Environment"
-  }, {
-    "url" : "https://api-m.paypal.com/v1/billing",
-    "description" : "PayPal Live Environment"
-  } ],
-```
+### 2. Update API Paths
 
-### 2. Remove `/v1/billing` from all path keys
-
-**Before:**
-```json
-"paths" : {
-  "/v1/billing/plans" : {
-    // ...existing code...
-  },
-  "/v1/billing/subscriptions" : {
-    // ...existing code...
-  }
-}
-```
-
-**After:**
-```json
-"paths" : {
-  "/plans" : {
-    // ...existing code...
-  },
-  "/subscriptions" : {
-    // ...existing code...
-  }
-}
-```
+- **Original:** Paths included the version prefix in each endpoint (e.g., `/v1/billing/plans`).
+- **Updated:** Paths are modified to remove the version prefix from the endpoints, as it is now included in the base URL. For example:
+    - **Original:** `/v1/billing/plans`
+    - **Updated:** `/plans`
+- **Reason:** This modification simplifies the API paths, making them shorter and more readable. It also centralizes the versioning to the base URL, which is a common best practice.
 
 ## OpenAPI cli command
 
