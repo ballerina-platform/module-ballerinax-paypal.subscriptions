@@ -37,20 +37,8 @@ ConnectionConfig config = {
     }
 };
 
-final Client paypal = check initClient();
+final Client paypal = check new Client(config, serviceUrl);
 
-function initClient() returns Client|error {
-    // Log the service URL and credentials for debugging
-    io:println("API URL: " + serviceUrl);
-    //io:println("Client ID: " + clientId);
-    //io:println("Client Secret: " + clientSecret);
-
-    return new Client(config, serviceUrl);
-}
-
-# # Test cases for PayPal Billing Plans Connectors
-#
-# Test to list all plans
 @test:Config {
     groups: ["live_tests", "mock_tests"],
     dependsOn: [testCreatePlan]
