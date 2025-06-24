@@ -5,8 +5,8 @@ name = "paypal.subscriptions"
 version = "1.0.0"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = [] # TODO: Add keywords
-# icon = "icon.png" # TODO: Add icon
+keywords = ["paypal", "subscriptions", "plans","billing", "payments", "recurring", "connector",]
+icon = "https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg"
 repository = "https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions"
 
 [build-options]
