@@ -19,7 +19,6 @@ import ballerina/io;
 import ballerina/test;
 import ballerina/time;
 
-// Define configurable variables
 configurable string serviceUrl = isLiveServer ? "https://api-m.sandbox.paypal.com/v1/billing" : "http://localhost:9090/v1/billing";
 configurable string clientId = ?;
 configurable string clientSecret = ?;
@@ -45,23 +44,17 @@ final Client paypal = check new Client(config, serviceUrl);
 }
 function testListPlans() returns error? {
     plan_collection response = check paypal->/plans();
-    // io:println("List Plans Response: " + response.toString());
     test:assertTrue(response?.plans !is ());
-
 }
 
-// Function to create a product
 @test:BeforeSuite
 function createProduct() returns error? {
     if !isLiveServer {
         testProductId = "PRD-TEMP";
         return;
     }
-    // Generate timestamp for unique ID
     time:Utc currentTime = time:utcNow();
-    int timestamp = currentTime[0]; // This gives you Unix timestamp like 1750142621
-
-    // Create HTTP client for PayPal API
+    int timestamp = currentTime[0];
     http:Client productClient = check new ("https://api-m.sandbox.paypal.com/v1/catalogs", config = {
         auth: {
             tokenUrl: "https://api-m.sandbox.paypal.com/v1/oauth2/token",
@@ -70,9 +63,8 @@ function createProduct() returns error? {
         }
     });
 
-    // Make API call to create product
     http:Response response = check productClient->/products.post({
-        id: timestamp.toString(), // Convert int to string
+        id: timestamp.toString(),
         name: "T-Shirt",
         "type": "PHYSICAL",
         description: "Cotton XL",
@@ -83,11 +75,9 @@ function createProduct() returns error? {
 
     json responseJson = check response.getJsonPayload();
     string productId = check responseJson.id;
-    // io:println("Created Product ID: " + productId);
     testProductId = productId;
 }
 
-# Test to create a new plan
 @test:Config {
     groups: ["live_tests", "mock_tests"]
 }
@@ -135,12 +125,10 @@ function testCreatePlan() returns error? {
         }
     };
     plan createdPlan = check paypal->/plans.post(payload);
-    io:println("Plan created successfully: ", createdPlan.id);
     test:assertTrue(createdPlan.id is string, "Created plan should have an ID");
     testPlanId = <string>createdPlan.id;
 }
 
-# Test to get a specific plan
 @test:Config {
     groups: ["live_tests", "mock_tests"],
     dependsOn: [testCreatePlan]
@@ -148,10 +136,8 @@ function testCreatePlan() returns error? {
 function testGetPlan() returns error? {
     plan plan = check paypal->/plans/[testPlanId].get();
     test:assertEquals(plan.id, testPlanId, "Retrieved plan ID should match the requested ID");
-    //io:println("Retrieved Plan: ", plan.toString());
 }
 
-# Test to update a plan
 @test:Config {
     groups: ["live_tests", "mock_tests"],
     dependsOn: [testCreatePlan],
@@ -167,13 +153,9 @@ function testUpdatePlan() returns error? {
             value: "Updated Fresh Clean Tees Plan"
         }
     ];
-
     error? response = check paypal->/plans/[testPlanId].patch(payload);
     test:assertTrue(response is (), "Response should be empty on successful patch");
-    io:println("Plan updated successfully: " + testPlanId);
 }
-
-# Test to deactivate a plan
 
 @test:Config {
     groups: ["live_tests", "mock_tests"],
@@ -183,10 +165,8 @@ function testUpdatePlan() returns error? {
 function testDeactivatePlan() returns error? {
     error? response = check paypal->/plans/[testPlanId]/deactivate.post();
     test:assertTrue(response is (), "Response should be empty on successful deactivation");
-    io:println("Plan deactivated successfully: " + testPlanId);
 }
 
-# Test to activate a plan
 @test:Config {
     groups: ["live_tests", "mock_tests"],
     dependsOn: [testCreatePlan, testDeactivatePlan],
@@ -195,10 +175,8 @@ function testDeactivatePlan() returns error? {
 function testActivatePlan() returns error? {
     error? response = check paypal->/plans/[testPlanId]/activate.post();
     test:assertTrue(response is (), "Response should be empty on successful activation");
-    io:println("Plan activated successfully: " + testPlanId);
 }
 
-# Test to update pricing schemes
 @test:Config {
     groups: ["live_tests", "mock_tests"],
     dependsOn: [testCreatePlan, testGetPlan],
@@ -229,12 +207,8 @@ function testUpdatePricingSchemes() returns error? {
     };
     error? response = check paypal->/plans/[testPlanId]/update\-pricing\-schemes.post(payload);
     test:assertTrue(response is (), "Response should be empty on successful update of pricing schemes");
-    io:println("Pricing schemes updated successfully for plan: " + testPlanId);
 }
 
-# # Test cases for PayPal Billing Subscription Connectors
-#
-# Test to create a new subscription
 @test:Config {
     groups: ["live_tests", "mock_tests"],
     dependsOn: [testActivatePlan]
@@ -284,10 +258,8 @@ function testCreateSubscription() returns error? {
     subscription response = check paypal->/subscriptions.post(payload);
     test:assertTrue(response.id is string, "Created subscription should have an ID");
     testSubscriptionId = <string>response.id;
-    io:println("Subscription created successfully: ", response.id);
 }
 
-# Test to get a specific subscription
 @test:Config {
     groups: ["live_tests", "mock_tests"]
 }
@@ -297,12 +269,9 @@ function testGetSubscription() returns error? {
     };
     subscription response = check paypal->/subscriptions/[testSubscriptionId].get(queries = queries);
     test:assertEquals(response.id, testSubscriptionId, "Retrieved subscription ID should match the requested ID");
-    io:println("Retrieved Subscription: ", response.toString());
-    testActivatedSubscriptionPlanId = <string>response.plan_id;
-
+    testActivatedSubscriptionPlanId = check response.plan_id.ensureType(string);
 }
 
-# Test to update a subscription
 @test:Config {
     groups: ["mock_tests", "live_active_subscription_tests"],
     after: testGetSubscription
@@ -329,11 +298,9 @@ function testUpdateSubscription() returns error? {
     ];
     error? response = check paypal->/subscriptions/[testActivatedSubscriptionId].patch(payload);
     test:assertTrue(response is (), "Response should be empty on successful patch");
-    io:println("Subscription updated successfully: " + testActivatedSubscriptionId);
     testSubscriptionId = testActivatedSubscriptionId;
 }
 
-# Test to revise a subscription
 @test:Config {
     groups: ["mock_tests", "live_active_subscription_tests"],
     dependsOn: [testUpdateSubscription],
@@ -353,12 +320,10 @@ function testReviseSubscription() returns error? {
         io:println("Error revising subscription: ", response.message());
         return response;
     }
-    io:println("Subscription revised successfully: " + testActivatedSubscriptionId);
     test:assertTrue(response.plan_id is string, "Revised subscription should have a plan ID");
     testSubscriptionId = testActivatedSubscriptionId;
 }
 
-# Test to suspend a subscription
 @test:Config {
     groups: ["mock_tests", "live_active_subscription_tests"],
     dependsOn: [testReviseSubscription],
@@ -370,10 +335,8 @@ function testSuspendSubscription() returns error? {
     };
     error? response = check paypal->/subscriptions/[testActivatedSubscriptionId]/suspend.post(payload);
     test:assertTrue(response is (), "Response should be empty on successful suspension");
-    io:println("Subscription suspended successfully: " + testActivatedSubscriptionId);
 }
 
-# Test to activate a subscription
 @test:Config {
     groups: ["mock_tests", "live_active_subscription_tests"],
     dependsOn: [testSuspendSubscription],
@@ -385,10 +348,8 @@ function testActivateSubscription() returns error? {
     };
     error? response = check paypal->/subscriptions/[testActivatedSubscriptionId]/activate.post(payload);
     test:assertTrue(response is (), "Response should be empty on successful activation");
-    io:println("Subscription activated successfully: " + testActivatedSubscriptionId);
 }
 
-# Test to cancel a subscription
 @test:Config {
     groups: ["mock_tests", "live_active_subscription_tests"],
     dependsOn: [testActivateSubscription],
@@ -400,5 +361,4 @@ function testCancelSubscription() returns error? {
     };
     error? response = check paypal->/subscriptions/[testActivatedSubscriptionId]/cancel.post(payload);
     test:assertTrue(response is (), "Response should be empty on successful cancellation");
-    io:println("Subscription cancelled successfully: " + testActivatedSubscriptionId);
 }
