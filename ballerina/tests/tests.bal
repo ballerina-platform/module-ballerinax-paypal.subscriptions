@@ -58,8 +58,8 @@ function createProduct() returns error? {
     http:Client productClient = check new ("https://api-m.sandbox.paypal.com/v1/catalogs", config = {
         auth: {
             tokenUrl: "https://api-m.sandbox.paypal.com/v1/oauth2/token",
-            clientId: clientId,
-            clientSecret: clientSecret
+            clientId,
+            clientSecret
         }
     });
 
@@ -126,7 +126,7 @@ function testCreatePlan() returns error? {
     };
     plan createdPlan = check paypal->/plans.post(payload);
     test:assertTrue(createdPlan.id is string, "Created plan should have an ID");
-    testPlanId = <string>createdPlan.id;
+    testPlanId = check createdPlan.id.ensureType(string);
 }
 
 @test:Config {
@@ -251,7 +251,7 @@ function testCreateSubscription() returns error? {
     };
     subscription response = check paypal->/subscriptions.post(payload);
     test:assertTrue(response.id is string, "Created subscription should have an ID");
-    testSubscriptionId = <string>response.id;
+    testSubscriptionId = check response.id.ensureType(string);
 }
 
 @test:Config {
