@@ -6,7 +6,7 @@ version = "1.0.0"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
 keywords = ["paypal", "subscriptions", "plans","billing", "payments", "recurring", "connector",]
-# icon = "icon.png" # TODO: Add icon
+icon = "icon.png"
 
 repository = "https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions"
 
