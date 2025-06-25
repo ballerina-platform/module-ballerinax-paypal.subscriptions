@@ -30,7 +30,6 @@ string testActivatedSubscriptionPlanId = "";
 
 ConnectionConfig config = {
     auth: {
-        //tokenUrl: "https://api-m.sandbox.paypal.com/v1/oauth2/token",
         clientId,
         clientSecret
     }
