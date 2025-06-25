@@ -15,7 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/io;
 import ballerina/test;
 import ballerina/time;
 
@@ -149,8 +148,7 @@ function testUpdatePlan() returns error? {
             value: "Updated Fresh Clean Tees Plan"
         }
     ];
-    error? response = check paypal->/plans/[testPlanId].patch(payload);
-    test:assertTrue(response is (), "Response should be empty on successful patch");
+    check paypal->/plans/[testPlanId].patch(payload);
 }
 
 @test:Config {
@@ -158,8 +156,7 @@ function testUpdatePlan() returns error? {
     dependsOn: [testCreatePlan]
 }
 function testDeactivatePlan() returns error? {
-    error? response = check paypal->/plans/[testPlanId]/deactivate.post();
-    test:assertTrue(response is (), "Response should be empty on successful deactivation");
+    check paypal->/plans/[testPlanId]/deactivate.post();
 }
 
 @test:Config {
@@ -167,8 +164,7 @@ function testDeactivatePlan() returns error? {
     dependsOn: [testCreatePlan, testDeactivatePlan]
 }
 function testActivatePlan() returns error? {
-    error? response = check paypal->/plans/[testPlanId]/activate.post();
-    test:assertTrue(response is (), "Response should be empty on successful activation");
+    check paypal->/plans/[testPlanId]/activate.post();
 }
 
 @test:Config {
@@ -198,8 +194,7 @@ function testUpdatePricingSchemes() returns error? {
             }
         ]
     };
-    error? response = check paypal->/plans/[testPlanId]/update\-pricing\-schemes.post(payload);
-    test:assertTrue(response is (), "Response should be empty on successful update of pricing schemes");
+    check paypal->/plans/[testPlanId]/update\-pricing\-schemes.post(payload);
 }
 
 @test:Config {
@@ -289,8 +284,7 @@ function testUpdateSubscription() returns error? {
             }
         }
     ];
-    error? response = check paypal->/subscriptions/[testActivatedSubscriptionId].patch(payload);
-    test:assertTrue(response is (), "Response should be empty on successful patch");
+    check paypal->/subscriptions/[testActivatedSubscriptionId].patch(payload);
     testSubscriptionId = testActivatedSubscriptionId;
 }
 
@@ -310,7 +304,6 @@ function testReviseSubscription() returns error? {
 
     SubscriptionReviseResponse|error response = check paypal->/subscriptions/[testActivatedSubscriptionId]/revise.post(payload);
     if response is error {
-        io:println("Error revising subscription: ", response.message());
         return response;
     }
     test:assertTrue(response.plan_id is string, "Revised subscription should have a plan ID");
@@ -338,8 +331,7 @@ function testActivateSubscription() returns error? {
     SubscriptionActivateRequest payload = {
         reason: "Items are back in stock"
     };
-    error? response = check paypal->/subscriptions/[testActivatedSubscriptionId]/activate.post(payload);
-    test:assertTrue(response is (), "Response should be empty on successful activation");
+    check paypal->/subscriptions/[testActivatedSubscriptionId]/activate.post(payload);
 }
 
 @test:Config {
@@ -351,6 +343,5 @@ function testCancelSubscription() returns error? {
     SubscriptionCancelRequest payload = {
         reason: "Customer requested cancellation"
     };
-    error? response = check paypal->/subscriptions/[testActivatedSubscriptionId]/cancel.post(payload);
-    test:assertTrue(response is (), "Response should be empty on successful cancellation");
+    check paypal->/subscriptions/[testActivatedSubscriptionId]/cancel.post(payload);
 }
