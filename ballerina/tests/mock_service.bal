@@ -28,7 +28,7 @@ http:Service mockService = service object {
     # List plans
     #
     # + return - A successful request returns the HTTP 200 OK status code with a JSON response body that lists billing plans
-    resource function get plans() returns plan_collection|error {
+    resource function get plans() returns PlanCollection|error {
         return {
             plans: [
                 {
@@ -65,7 +65,7 @@ http:Service mockService = service object {
 
     # + payload - The plan request payload
     # + return - A successful request returns the HTTP 200 OK status code with a JSON response body that shows billing plan details
-    resource function post plans(@http:Payload plan_request_POST payload) returns plan|error {
+    resource function post plans(@http:Payload PlanRequestPOST payload) returns Plan|error {
         return {
             name: payload.name,
             id: "P-20250618",
@@ -95,7 +95,7 @@ http:Service mockService = service object {
     #
     # + planId - The ID of the plan to retrieve
     # + return - A successful request returns the HTTP 200 OK status code with a JSON response body that shows billing plan details
-    resource function get plans/[string planId]() returns plan|error {
+    resource function get plans/[string planId]() returns Plan|error {
         return {
             name: "Basic Plan",
             id: planId, // Return the same plan ID that was requested
@@ -124,8 +124,8 @@ http:Service mockService = service object {
     # Update plan by ID
     # + planId - The ID of the plan to update
     # + payload - The plan request payload
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body 
-    resource function patch plans/[string planId](@http:Payload patch_request payload) returns http:Ok|error? {
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
+    resource function patch plans/[string planId](@http:Payload PatchRequest payload) returns http:Ok|error? {
         log:printInfo("Mock service received patch request for plan ID: " + planId);
         log:printInfo("Patch payload: " + payload.toString());
         return {};
@@ -134,7 +134,7 @@ http:Service mockService = service object {
     # Deactivate plan
     #
     # + id - The ID of the subscription
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body 
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
     resource function post plans/[string id]/deactivate() returns http:Ok|error {
         log:printInfo("Mock service received deactivate request for plan ID: " + id);
         return {};
@@ -143,7 +143,7 @@ http:Service mockService = service object {
     # Activate plan
     #
     # + id - The ID of the subscription
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body 
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
     resource function post plans/[string id]/activate() returns http:Ok|error {
         log:printInfo("Mock service received activate request for plan ID: " + id);
         return {};
@@ -153,8 +153,8 @@ http:Service mockService = service object {
     #
     # + id - The ID of the subscription
     # + payload - The request payload containing the pricing schemes to update
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body 
-    resource function post plans/[string id]/update\-pricing\-schemes(@http:Payload update_pricing_schemes_list_request payload) returns http:Ok|error {
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
+    resource function post plans/[string id]/update\-pricing\-schemes(@http:Payload UpdatePricingSchemesListRequest payload) returns http:Ok|error {
         log:printInfo("Mock service received update pricing request for plan ID: " + id);
         log:printInfo("Update pricing payload: " + payload.toString());
         return {};
@@ -165,9 +165,9 @@ http:Service mockService = service object {
 
     # create a new subscription
     # + payload - The subscription request payload
-    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details. 
-    resource function post subscriptions(@http:Payload subscription_request_post payload) returns subscription|error {
-        return <subscription>
+    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details.
+    resource function post subscriptions(@http:Payload SubscriptionRequestPost payload) returns Subscription|error {
+        return <Subscription>
             {
             id: "I-1234567890",
             status: "APPROVAL_PENDING",
@@ -190,8 +190,8 @@ http:Service mockService = service object {
     # get subscription by ID
     #
     # + id - The ID of the subscription to retrieve
-    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details. 
-    resource function get subscriptions/[string id]() returns subscription|error {
+    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details.
+    resource function get subscriptions/[string id]() returns Subscription|error {
         return {
             id: id,
             status: "ACTIVE",
@@ -215,8 +215,8 @@ http:Service mockService = service object {
     #
     # + id - The ID of the subscription to update
     # + payload - The request payload containing the subscription details to update
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body 
-    resource function patch subscriptions/[string id](@http:Payload patch_request payload) returns http:Ok|error? {
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
+    resource function patch subscriptions/[string id](@http:Payload PatchRequest payload) returns http:Ok|error? {
         log:printInfo("Mock service received update request for subscription ID: " + id);
         log:printInfo("Update payload: " + payload.toString());
         return {};
@@ -225,9 +225,9 @@ http:Service mockService = service object {
     # Revise plan or quantity of subscription
     #
     # + id - The ID of the subscription.
-    # + payload - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details. 
-    resource function post subscriptions/[string id]/revise(@http:Payload subscription_revise_request payload) returns subscription_revise_response|error {
+    # + payload - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details.
+    resource function post subscriptions/[string id]/revise(@http:Payload SubscriptionReviseRequest payload) returns SubscriptionReviseResponse|error {
         log:printInfo("Mock service received revise request for subscription ID: " + id);
         log:printInfo("Revise payload: " + payload.toString());
         return {
@@ -247,8 +247,8 @@ http:Service mockService = service object {
     #
     # + id - The ID of the subscription.
     # + payload - Headers to be sent with the request
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body. 
-    resource function post subscriptions/[string id]/suspend(@http:Payload subscription_suspend_request payload) returns http:Ok|error {
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body.
+    resource function post subscriptions/[string id]/suspend(@http:Payload SubscriptionSuspendRequest payload) returns http:Ok|error {
         log:printInfo("Mock service received suspend request for subscription ID: " + id);
         log:printInfo("Reason for suspension: " + payload.reason.toString());
         return {};
@@ -258,8 +258,8 @@ http:Service mockService = service object {
     #
     # + id - The ID of the subscription.
     # + payload - Headers to be sent with the request
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body. 
-    resource function post subscriptions/[string id]/activate(@http:Payload subscription_activate_request payload) returns http:Ok|error {
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body.
+    resource function post subscriptions/[string id]/activate(@http:Payload SubscriptionActivateRequest payload) returns http:Ok|error {
         log:printInfo("Mock service received activate request for subscription ID: " + id);
         log:printInfo("Reason for activation: " + payload.reason.toString());
         return {};
@@ -269,8 +269,8 @@ http:Service mockService = service object {
     #
     # + id - The ID of the subscription.
     # + payload - Headers to be sent with the request
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body. 
-    resource function post subscriptions/[string id]/cancel(@http:Payload subscription_cancel_request payload) returns http:Ok|error {
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body.
+    resource function post subscriptions/[string id]/cancel(@http:Payload SubscriptionCancelRequest payload) returns http:Ok|error {
         log:printInfo("Mock service received cancel request for subscription ID: " + id);
         log:printInfo("Reason for cancellation: " + payload.reason.toString());
         return {};

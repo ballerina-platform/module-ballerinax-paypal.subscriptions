@@ -30,7 +30,7 @@ string testActivatedSubscriptionPlanId = "";
 
 ConnectionConfig config = {
     auth: {
-        tokenUrl: "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+        //tokenUrl: "https://api-m.sandbox.paypal.com/v1/oauth2/token",
         clientId,
         clientSecret
     }
@@ -43,7 +43,7 @@ final Client paypal = check new Client(config, serviceUrl);
     dependsOn: [testCreatePlan]
 }
 function testListPlans() returns error? {
-    plan_collection response = check paypal->/plans();
+    PlanCollection response = check paypal->/plans();
     test:assertTrue(response?.plans !is ());
 }
 
@@ -82,7 +82,7 @@ function createProduct() returns error? {
     groups: ["live_tests", "mock_tests"]
 }
 function testCreatePlan() returns error? {
-    plan_request_POST payload = {
+    PlanRequestPOST payload = {
         product_id: testProductId,
         name: "Fresh Clean Tees Plan",
         status: "ACTIVE",
@@ -124,7 +124,7 @@ function testCreatePlan() returns error? {
             payment_failure_threshold: 3
         }
     };
-    plan createdPlan = check paypal->/plans.post(payload);
+    Plan createdPlan = check paypal->/plans.post(payload);
     test:assertTrue(createdPlan.id is string, "Created plan should have an ID");
     testPlanId = check createdPlan.id.ensureType(string);
 }
@@ -134,7 +134,7 @@ function testCreatePlan() returns error? {
     dependsOn: [testCreatePlan]
 }
 function testGetPlan() returns error? {
-    plan plan = check paypal->/plans/[testPlanId].get();
+    Plan plan = check paypal->/plans/[testPlanId].get();
     test:assertEquals(plan.id, testPlanId, "Retrieved plan ID should match the requested ID");
 }
 
@@ -143,7 +143,7 @@ function testGetPlan() returns error? {
     dependsOn: [testCreatePlan]
 }
 function testUpdatePlan() returns error? {
-    patch_request payload = [
+    PatchRequest payload = [
         {
             op: "replace",
             path: "/name",
@@ -177,7 +177,7 @@ function testActivatePlan() returns error? {
     dependsOn: [testCreatePlan, testGetPlan]
 }
 function testUpdatePricingSchemes() returns error? {
-    update_pricing_schemes_list_request payload = {
+    UpdatePricingSchemesListRequest payload = {
         pricing_schemes: [
             {
                 billing_cycle_sequence: 1,
@@ -209,7 +209,7 @@ function testUpdatePricingSchemes() returns error? {
 }
 function testCreateSubscription() returns error? {
     string twoMinutesFromNow = time:utcToString(time:utcAddSeconds(time:utcNow(), 120));
-    subscription_request_post payload = {
+    SubscriptionRequestPost payload = {
         plan_id: testPlanId,
         start_time: twoMinutesFromNow,
         shipping_amount: {
@@ -249,7 +249,7 @@ function testCreateSubscription() returns error? {
             cancel_url: "https://example.com/cancel"
         }
     };
-    subscription response = check paypal->/subscriptions.post(payload);
+    Subscription response = check paypal->/subscriptions.post(payload);
     test:assertTrue(response.id is string, "Created subscription should have an ID");
     testSubscriptionId = check response.id.ensureType(string);
 }
@@ -261,7 +261,7 @@ function testGetSubscription() returns error? {
     SubscriptionsGetQueries queries = {
         fields: "id,plan_id,status"
     };
-    subscription response = check paypal->/subscriptions/[testSubscriptionId].get(queries = queries);
+    Subscription response = check paypal->/subscriptions/[testSubscriptionId].get(queries = queries);
     test:assertEquals(response.id, testSubscriptionId, "Retrieved subscription ID should match the requested ID");
     testActivatedSubscriptionPlanId = check response.plan_id.ensureType(string);
 }
@@ -271,7 +271,7 @@ function testGetSubscription() returns error? {
     after: testGetSubscription
 }
 function testUpdateSubscription() returns error? {
-    patch_request payload = [
+    PatchRequest payload = [
         {
             op: "replace",
             path: "/subscriber/shipping_address",
@@ -301,7 +301,7 @@ function testUpdateSubscription() returns error? {
     after: testGetSubscription
 }
 function testReviseSubscription() returns error? {
-    subscription_revise_request payload = {
+    SubscriptionReviseRequest payload = {
         plan_id: testActivatedSubscriptionPlanId,
         shipping_amount: {
             currency_code: "USD",
@@ -309,7 +309,7 @@ function testReviseSubscription() returns error? {
         }
     };
 
-    subscription_revise_response|error response = check paypal->/subscriptions/[testActivatedSubscriptionId]/revise.post(payload);
+    SubscriptionReviseResponse|error response = check paypal->/subscriptions/[testActivatedSubscriptionId]/revise.post(payload);
     if response is error {
         io:println("Error revising subscription: ", response.message());
         return response;
@@ -324,7 +324,7 @@ function testReviseSubscription() returns error? {
     after: testGetSubscription
 }
 function testSuspendSubscription() returns error? {
-    subscription_suspend_request payload = {
+    SubscriptionSuspendRequest payload = {
         reason: "Item out of stock"
     };
     check paypal->/subscriptions/[testActivatedSubscriptionId]/suspend.post(payload);
@@ -336,7 +336,7 @@ function testSuspendSubscription() returns error? {
     after: testGetSubscription
 }
 function testActivateSubscription() returns error? {
-    subscription_activate_request payload = {
+    SubscriptionActivateRequest payload = {
         reason: "Items are back in stock"
     };
     error? response = check paypal->/subscriptions/[testActivatedSubscriptionId]/activate.post(payload);
@@ -349,7 +349,7 @@ function testActivateSubscription() returns error? {
     after: testGetSubscription
 }
 function testCancelSubscription() returns error? {
-    subscription_cancel_request payload = {
+    SubscriptionCancelRequest payload = {
         reason: "Customer requested cancellation"
     };
     error? response = check paypal->/subscriptions/[testActivatedSubscriptionId]/cancel.post(payload);
