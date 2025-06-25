@@ -25,9 +25,9 @@ public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
     #
-    # + config - The configurations to be used when initializing the `connector` 
-    # + serviceUrl - URL of the target service 
-    # + return - An error if connector initialization failed 
+    # + config - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error if connector initialization failed
     public isolated function init(ConnectionConfig config, string serviceUrl = "https://api-m.sandbox.paypal.com/v1/billing") returns error? {
         http:ClientConfiguration httpClientConfig = {auth: config.auth, httpVersion: config.httpVersion, http1Settings: config.http1Settings, http2Settings: config.http2Settings, timeout: config.timeout, forwarded: config.forwarded, followRedirects: config.followRedirects, poolConfig: config.poolConfig, cache: config.cache, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, cookieConfig: config.cookieConfig, responseLimits: config.responseLimits, secureSocket: config.secureSocket, proxy: config.proxy, socketConfig: config.socketConfig, validation: config.validation, laxDataBinding: config.laxDataBinding};
         self.clientEp = check new (serviceUrl, httpClientConfig);
@@ -35,10 +35,10 @@ public isolated client class Client {
 
     # List plans
     #
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that lists billing plans. 
-    resource isolated function get plans(PlansListHeaders headers = {}, *PlansListQueries queries) returns plan_collection|error {
+    # + headers - Headers to be sent with the request
+    # + queries - Queries to be sent with the request
+    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that lists billing plans
+    resource isolated function get plans(PlansListHeaders headers = {}, *PlansListQueries queries) returns PlanCollection|error {
         string resourcePath = string `/plans`;
         resourcePath = resourcePath + check getPathForQueryParam(queries);
         map<string|string[]> httpHeaders = http:getHeaderMap(headers);
@@ -47,9 +47,9 @@ public isolated client class Client {
 
     # Create plan
     #
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows billing plan details. 
-    resource isolated function post plans(plan_request_POST payload, PlansCreateHeaders headers = {}) returns plan|error {
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows billing plan details
+    resource isolated function post plans(PlanRequestPOST payload, PlansCreateHeaders headers = {}) returns Plan|error {
         string resourcePath = string `/plans`;
         map<string|string[]> httpHeaders = http:getHeaderMap(headers);
         http:Request request = new;
@@ -60,20 +60,20 @@ public isolated client class Client {
 
     # Show plan details
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows plan details. 
-    resource isolated function get plans/[string id](map<string|string[]> headers = {}) returns plan|error {
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows plan details
+    resource isolated function get plans/[string id](map<string|string[]> headers = {}) returns Plan|error {
         string resourcePath = string `/plans/${getEncodedUri(id)}`;
         return self.clientEp->get(resourcePath, headers);
     }
 
     # Update plan
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body. 
-    resource isolated function patch plans/[string id](patch_request payload, map<string|string[]> headers = {}) returns error? {
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
+    resource isolated function patch plans/[string id](PatchRequest payload, map<string|string[]> headers = {}) returns error? {
         string resourcePath = string `/plans/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = jsondata:toJson(payload);
@@ -83,9 +83,9 @@ public isolated client class Client {
 
     # Activate plan
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body. 
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
     resource isolated function post plans/[string id]/activate(map<string|string[]> headers = {}) returns error? {
         string resourcePath = string `/plans/${getEncodedUri(id)}/activate`;
         http:Request request = new;
@@ -94,9 +94,9 @@ public isolated client class Client {
 
     # Deactivate plan
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body. 
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
     resource isolated function post plans/[string id]/deactivate(map<string|string[]> headers = {}) returns error? {
         string resourcePath = string `/plans/${getEncodedUri(id)}/deactivate`;
         http:Request request = new;
@@ -105,10 +105,10 @@ public isolated client class Client {
 
     # Update pricing
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body. 
-    resource isolated function post plans/[string id]/update\-pricing\-schemes(update_pricing_schemes_list_request payload, map<string|string[]> headers = {}) returns error? {
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
+    resource isolated function post plans/[string id]/update\-pricing\-schemes(UpdatePricingSchemesListRequest payload, map<string|string[]> headers = {}) returns error? {
         string resourcePath = string `/plans/${getEncodedUri(id)}/update-pricing-schemes`;
         http:Request request = new;
         json jsonBody = jsondata:toJson(payload);
@@ -118,9 +118,9 @@ public isolated client class Client {
 
     # Create subscription
     #
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details. 
-    resource isolated function post subscriptions(subscription_request_post payload, SubscriptionsCreateHeaders headers = {}) returns subscription|error {
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details
+    resource isolated function post subscriptions(SubscriptionRequestPost payload, SubscriptionsCreateHeaders headers = {}) returns Subscription|error {
         string resourcePath = string `/subscriptions`;
         map<string|string[]> httpHeaders = http:getHeaderMap(headers);
         http:Request request = new;
@@ -131,11 +131,11 @@ public isolated client class Client {
 
     # Show subscription details
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details. 
-    resource isolated function get subscriptions/[string id](map<string|string[]> headers = {}, *SubscriptionsGetQueries queries) returns subscription|error {
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + queries - Queries to be sent with the request
+    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details
+    resource isolated function get subscriptions/[string id](map<string|string[]> headers = {}, *SubscriptionsGetQueries queries) returns Subscription|error {
         string resourcePath = string `/subscriptions/${getEncodedUri(id)}`;
         resourcePath = resourcePath + check getPathForQueryParam(queries);
         return self.clientEp->get(resourcePath, headers);
@@ -143,10 +143,10 @@ public isolated client class Client {
 
     # Update subscription
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body. 
-    resource isolated function patch subscriptions/[string id](patch_request payload, map<string|string[]> headers = {}) returns error? {
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
+    resource isolated function patch subscriptions/[string id](PatchRequest payload, map<string|string[]> headers = {}) returns error? {
         string resourcePath = string `/subscriptions/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = jsondata:toJson(payload);
@@ -156,10 +156,10 @@ public isolated client class Client {
 
     # Revise plan or quantity of subscription
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details. 
-    resource isolated function post subscriptions/[string id]/revise(subscription_revise_request payload, map<string|string[]> headers = {}) returns subscription_revise_response|error {
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details
+    resource isolated function post subscriptions/[string id]/revise(SubscriptionReviseRequest payload, map<string|string[]> headers = {}) returns SubscriptionReviseResponse|error {
         string resourcePath = string `/subscriptions/${getEncodedUri(id)}/revise`;
         http:Request request = new;
         json jsonBody = jsondata:toJson(payload);
@@ -169,10 +169,10 @@ public isolated client class Client {
 
     # Suspend subscription
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body. 
-    resource isolated function post subscriptions/[string id]/suspend(subscription_suspend_request payload, map<string|string[]> headers = {}) returns error? {
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
+    resource isolated function post subscriptions/[string id]/suspend(SubscriptionSuspendRequest payload, map<string|string[]> headers = {}) returns error? {
         string resourcePath = string `/subscriptions/${getEncodedUri(id)}/suspend`;
         http:Request request = new;
         json jsonBody = jsondata:toJson(payload);
@@ -182,10 +182,10 @@ public isolated client class Client {
 
     # Cancel subscription
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body. 
-    resource isolated function post subscriptions/[string id]/cancel(subscription_cancel_request payload, map<string|string[]> headers = {}) returns error? {
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
+    resource isolated function post subscriptions/[string id]/cancel(SubscriptionCancelRequest payload, map<string|string[]> headers = {}) returns error? {
         string resourcePath = string `/subscriptions/${getEncodedUri(id)}/cancel`;
         http:Request request = new;
         json jsonBody = jsondata:toJson(payload);
@@ -195,10 +195,10 @@ public isolated client class Client {
 
     # Activate subscription
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body. 
-    resource isolated function post subscriptions/[string id]/activate(subscription_activate_request payload, map<string|string[]> headers = {}) returns error? {
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `204 No Content` status code with no JSON response body
+    resource isolated function post subscriptions/[string id]/activate(SubscriptionActivateRequest payload, map<string|string[]> headers = {}) returns error? {
         string resourcePath = string `/subscriptions/${getEncodedUri(id)}/activate`;
         http:Request request = new;
         json jsonBody = jsondata:toJson(payload);
@@ -208,10 +208,10 @@ public isolated client class Client {
 
     # Capture authorized payment on subscription
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details. 
-    resource isolated function post subscriptions/[string id]/capture(subscription_capture_request payload, SubscriptionsCaptureHeaders headers = {}) returns 'transaction|error? {
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details
+    resource isolated function post subscriptions/[string id]/capture(SubscriptionCaptureRequest payload, SubscriptionsCaptureHeaders headers = {}) returns Transaction|error? {
         string resourcePath = string `/subscriptions/${getEncodedUri(id)}/capture`;
         map<string|string[]> httpHeaders = http:getHeaderMap(headers);
         http:Request request = new;
@@ -222,11 +222,11 @@ public isolated client class Client {
 
     # List transactions for subscription
     #
-    # + id - The ID of the subscription.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details. 
-    resource isolated function get subscriptions/[string id]/transactions(map<string|string[]> headers = {}, *SubscriptionsTransactionsQueries queries) returns transactions_list|error {
+    # + id - The ID of the subscription
+    # + headers - Headers to be sent with the request
+    # + queries - Queries to be sent with the request
+    # + return - A successful request returns the HTTP `200 OK` status code and a JSON response body that shows subscription details
+    resource isolated function get subscriptions/[string id]/transactions(map<string|string[]> headers = {}, *SubscriptionsTransactionsQueries queries) returns TransactionsList|error {
         string resourcePath = string `/subscriptions/${getEncodedUri(id)}/transactions`;
         resourcePath = resourcePath + check getPathForQueryParam(queries);
         return self.clientEp->get(resourcePath, headers);
