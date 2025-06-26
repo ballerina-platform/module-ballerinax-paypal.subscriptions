@@ -21,10 +21,11 @@ import ballerina/time;
 configurable string serviceUrl = isLiveServer ? "https://api-m.sandbox.paypal.com/v1/billing" : "http://localhost:9090/v1/billing";
 configurable string clientId = ?;
 configurable string clientSecret = ?;
+configurable string testActivatedSubscriptionId = ?;
+
 string testProductId = "";
 string testPlanId = "";
 string testSubscriptionId = "";
-configurable string testActivatedSubscriptionId = ?;
 string testActivatedSubscriptionPlanId = "";
 
 ConnectionConfig config = {
@@ -35,15 +36,6 @@ ConnectionConfig config = {
 };
 
 final Client paypal = check new Client(config, serviceUrl);
-
-@test:Config {
-    groups: ["live_tests", "mock_tests"],
-    dependsOn: [testCreatePlan]
-}
-function testListPlans() returns error? {
-    PlanCollection response = check paypal->/plans();
-    test:assertTrue(response?.plans !is ());
-}
 
 @test:BeforeSuite
 function createProduct() returns error? {
@@ -74,6 +66,15 @@ function createProduct() returns error? {
     json responseJson = check response.getJsonPayload();
     string productId = check responseJson.id;
     testProductId = productId;
+}
+
+@test:Config {
+    groups: ["live_tests", "mock_tests"],
+    dependsOn: [testCreatePlan]
+}
+function testListPlans() returns error? {
+    PlanCollection response = check paypal->/plans();
+    test:assertTrue(response?.plans !is ());
 }
 
 @test:Config {
