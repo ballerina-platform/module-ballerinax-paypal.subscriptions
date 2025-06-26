@@ -1,0 +1,8 @@
+[package]
+org = "viththagan"
+name = "create_and_list_plans"
+version = "0.1.0"
+distribution = "2201.12.7"
+
+[build-options]
+observabilityIncluded = true
