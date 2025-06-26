@@ -303,10 +303,7 @@ function testReviseSubscription() returns error? {
         }
     };
 
-    SubscriptionReviseResponse|error response = check paypal->/subscriptions/[testActivatedSubscriptionId]/revise.post(payload);
-    if response is error {
-        return response;
-    }
+    SubscriptionReviseResponse response = check paypal->/subscriptions/[testActivatedSubscriptionId]/revise.post(payload);
     test:assertTrue(response.plan_id is string, "Revised subscription should have a plan ID");
     testSubscriptionId = testActivatedSubscriptionId;
 }
