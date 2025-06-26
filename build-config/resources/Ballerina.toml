@@ -5,7 +5,7 @@ name = "paypal.subscriptions"
 version = "@toml.version@"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["paypal", "subscriptions", "plans","billing", "payments", "recurring", "connector",]
+keywords = ["PayPal", "Subscriptions", "Plans","Billing", "Payments", "Recurring", "Connector"]
 icon = "icon.png"
 
 repository = "https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions"
