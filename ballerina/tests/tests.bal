@@ -15,29 +15,49 @@
 // under the License.
 
 import ballerina/http;
+import ballerina/lang.runtime;
+import ballerina/log;
 import ballerina/test;
 import ballerina/time;
 
 configurable string serviceUrl = isLiveServer ? "https://api-m.sandbox.paypal.com/v1/billing" : "http://localhost:9090/v1/billing";
-configurable string clientId = ?;
-configurable string clientSecret = ?;
-configurable string testActivatedSubscriptionId = ?;
+configurable string clientId = "mock-client-id";
+configurable string clientSecret = "mock-client-secret";
+configurable string testActivatedSubscriptionId = "mock-activated-subscription-id";
 
 string testProductId = "";
 string testPlanId = "";
 string testSubscriptionId = "";
 string testActivatedSubscriptionPlanId = "";
+string mockTokenUrl = "http://localhost:" + HTTP_SERVER_PORT.toString() + "/oauth2/token";
 
 ConnectionConfig config = {
     auth: {
         clientId,
-        clientSecret
+        clientSecret,
+        tokenUrl: isLiveServer ? "https://api-m.sandbox.paypal.com/v1/oauth2/token" : mockTokenUrl
     }
 };
 
-final Client paypal = check new Client(config, serviceUrl);
+Client paypal = test:mock(Client);
 
 @test:BeforeSuite
+function initClient() returns error? {
+    if isLiveServer {
+        paypal = check new (config, serviceUrl);
+    }
+    else {
+        check stsListener.attach(sts, "/oauth2");
+        check stsListener.'start();
+
+        runtime:registerListener(stsListener);
+        log:printInfo(string `STS started on port: ${HTTP_SERVER_PORT} (HTTP)`);
+
+        paypal = check new (config, serviceUrl);
+    }
+    check createProduct();
+}
+
 function createProduct() returns error? {
     if !isLiveServer {
         testProductId = "PRD-TEMP";
@@ -47,7 +67,7 @@ function createProduct() returns error? {
     int timestamp = currentTime[0];
     http:Client productClient = check new ("https://api-m.sandbox.paypal.com/v1/catalogs", config = {
         auth: {
-            tokenUrl: "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+            tokenUrl: isLiveServer ? "https://api-m.sandbox.paypal.com/v1/oauth2/token" : mockTokenUrl,
             clientId,
             clientSecret
         }
