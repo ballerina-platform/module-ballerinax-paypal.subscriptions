@@ -17,7 +17,7 @@
 import ballerina/http;
 import ballerina/log;
 
-configurable boolean isLiveServer = ?;
+configurable boolean isLiveServer = false;
 
 listener http:Listener httpListener = new (9090);
 
