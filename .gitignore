@@ -54,4 +54,8 @@ build
 # Ignore Docker env file
 docker.env
 
+# Ignore environment file
 .env
+
+# Ignore Examples Dependencies file
+examples/**/Dependencies.toml
