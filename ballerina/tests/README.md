@@ -7,22 +7,17 @@ To run the tests for this PayPal Subscriptions Ballerina connector, you need:
 - (Optional) An activated subscription ID for `live_active_subscription_tests`. See [docs/ActivateSubscription.md](docs/ActivateSubscription.md) for activation steps.
 
 For more information on obtaining credentials, refer to the [PayPal Developer Documentation](https://developer.paypal.com/api/rest/).
-
----
-
 ## Test Environments
 
 There are two test environments for running the PayPal Subscriptions connector tests:
 
-| Test Group   | Environment                                         |
-| ------------ | --------------------------------------------------- |
-| `mock_tests` | Mock server for PayPal Subscriptions API (Default)  |
-| `live_tests` | PayPal Sandbox API                                  |
-| `live_active_subscription_tests`| PayPal Sandbox API (requires active subscription ID) |
+| Test Group                        | Environment                                           |
+|-----------------------------------|-------------------------------------------------------|
+| `mock_tests`                      | Mock server for PayPal Subscriptions API (Default)   |
+| `live_tests`                      | PayPal Sandbox API                                    |
+| `live_active_subscription_tests`  | PayPal Sandbox API (requires active subscription ID) |
 
 You can run tests in either environment. Each group has its own compatible set of tests.
-
----
 
 ## Running Tests in the Mock Server
 
@@ -42,7 +37,7 @@ clientSecret = "DUMMY_CLIENT_SECRET"
 
 ### Using Environment Variables
 
-### Linux or macOS
+#### Linux or macOS
 
 ```bash
 export IS_LIVE_SERVER=false
@@ -52,12 +47,11 @@ export CLIENT_SECRET="DUMMY_CLIENT_SECRET"
 
 #### Windows
 
-```bash
+```cmd
 setx IS_LIVE_SERVER false
 setx CLIENT_ID DUMMY_CLIENT_ID
 setx CLIENT_SECRET DUMMY_CLIENT_SECRET
 ```
----
 
 ## Running Tests Against PayPal Sandbox API
 
@@ -92,7 +86,7 @@ export TEST_ACTIVATED_SUBSCRIPTION_ID="<your-activated-subscription-id>"
 
 #### Windows
 
-```bash
+```cmd
 setx IS_LIVE_SERVER true
 setx CLIENT_ID <your-paypal-sandbox-client-id>
 setx CLIENT_SECRET <your-paypal-sandbox-client-secret>
@@ -107,7 +101,7 @@ Then, run the following command to run the tests:
 
 ## Running Specific Groups or Test Cases
 
-To run only certain test groups or individual test cases, pass the -Pgroups property:
+To run only certain test groups or individual test cases, pass the `-Pgroups` property:
 
 ```bash
 ./gradlew clean test -Pgroups=<comma-separated-groups-or-test-cases>
@@ -122,6 +116,7 @@ For example, to run only the mock tests:
 For `live_active_subscription_tests`, obtain an activated subscription ID by following [docs/ActivateSubscription.md](docs/ActivateSubscription.md).
 
 ## Notes
+
 - The `live_active_subscription_tests` group includes tests like `testUpdateSubscription`, `testReviseSubscription`, `testSuspendSubscription`, `testActivateSubscription`, and `testCancelSubscription`, requiring an active subscription.
 - Screenshots for setup and activation are in `docs/resources/`.
 - For issues, verify configurations and credentials in the PayPal Developer Dashboard.
