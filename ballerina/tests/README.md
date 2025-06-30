@@ -7,9 +7,10 @@ To run the tests for this PayPal Subscriptions Ballerina connector, you need:
 - (Optional) An activated subscription ID for `live_active_subscription_tests`. See [docs/ActivateSubscription.md](docs/ActivateSubscription.md) for activation steps.
 
 For more information on obtaining credentials, refer to the [PayPal Developer Documentation](https://developer.paypal.com/api/rest/).
+
 ## Test Environments
 
-There are two test environments for running the PayPal Subscriptions connector tests:
+There are three test environments for running the PayPal Subscriptions connector tests:
 
 | Test Group                        | Environment                                           |
 |-----------------------------------|-------------------------------------------------------|
@@ -25,7 +26,7 @@ To execute tests on the mock server, ensure that the `isLiveServer` configuratio
 
 You can configure this variable in the `Config.toml` file in the `tests` directory or set it as an environment variable.
 
-### Configure the `Config.toml` file
+### Using a `Config.toml` File
 
 Create a `Config.toml` file in the `tests` directory with the following content:
 
@@ -43,7 +44,7 @@ Then, run the following command to run the tests:
 
 ## Running Tests Against PayPal Sandbox API
 
-### Configure the `Config.toml` file
+### Using a `Config.toml` File
 
 Create a `Config.toml` file in the `tests` directory and add your PayPal sandbox credentials:
 
