@@ -31,22 +31,22 @@ The `live_active_subscription_tests` group in `tests.bal` requires an active sub
 2. **Obtain Sandbox Personal Account Credentials**:
    - Log in to the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard).
    - Navigate to "Sandbox Accounts" under "Testing Tools".
-     ![Sandbox Accounts](resources/sandbox-accounts.png)
+     ![Sandbox Accounts](https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-paypal.subscriptions/main/ballerina/tests/docs/resources/sandbox-accounts.png)
    - Locate your Personal account (e.g., `xxxx@personal.example.com`).
    - Click "View/Edit Account" to see the credentials (email and password).
-     ![Personal Account Credentials](resources/personal-account-credentials.png)
+     ![Personal Account Credentials](https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-paypal.subscriptions/main/ballerina/tests/docs/resources/personal-account-credentials.png)
 
 3. **Activate the Subscription in the Browser**:
    - Open the `approve` URL in a browser.
-   - You’ll be redirected to a PayPal login page.
-     ![PayPal Login Page](resources/paypal-login-page.png)
+   - You'll be redirected to a PayPal login page.
+     ![PayPal Login Page](https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-paypal.subscriptions/main/ballerina/tests/docs/resources/paypal-login-page.png)
    - Log in using the sandbox Personal account credentials (e.g., `xxxx@personal.example.com` and password).
    - On the "Choose a way to pay" page, select a payment method and click "Continue".
-     ![Choose Payment Method](resources/choose-payment-method.png)
+     ![Choose Payment Method](https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-paypal.subscriptions/main/ballerina/tests/docs/resources/choose-payment-method.png)
    - Click "Agree and Subscribe" to activate the subscription.
      > **Note**: No real funds are used, as this is a sandbox environment.
-   - You’ll be redirected to an example page (e.g., `https://example.com/return`).
-     ![Example Domain Page](resources/example-domain-page.png)
+   - You'll be redirected to an example page (e.g., `https://example.com/return`).
+     ![Example Domain Page](https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-paypal.subscriptions/main/ballerina/tests/docs/resources/example-domain-page.png)
    - This confirms the subscription is activated (status changes to `ACTIVE`).
 
 4. **Update `Config.toml`**:
