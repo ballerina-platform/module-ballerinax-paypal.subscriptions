@@ -16,6 +16,7 @@ To use the PayPal Subscriptions connector, you must have access to a [PayPal Dev
 
 3. Create a Business account.
    > Note: Some PayPal options and features may vary by region or country; check availability before creating an account.
+   
    ![Create business account](https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-paypal.subscriptions/main/docs/setup/resources/create-account.png)
 
 ### Step 2: Create a REST API App
