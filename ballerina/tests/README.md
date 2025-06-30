@@ -3,8 +3,8 @@
 ## Prerequisites
 
 To run the tests for this PayPal Subscriptions Ballerina connector, you need:
-- A PayPal developer account with sandbox credentials (Client ID and Client Secret).
-- (Optional) An activated subscription ID for certain live tests.
+- A PayPal developer account with sandbox credentials (Client ID and Client Secret). See the [Setup Guide](../README.md#setup-guide) in the main `README.md` for instructions.
+- (Optional) An activated subscription ID for `live_active_subscription_tests`. See [docs/ActivateSubscription.md](docs/ActivateSubscription.md) for activation steps.
 
 For more information on obtaining credentials, refer to the [PayPal Developer Documentation](https://developer.paypal.com/api/rest/).
 
@@ -118,3 +118,10 @@ For example, to run only the mock tests:
 ```bash
 ./gradlew clean test -Pgroups=mock_tests
 ```
+
+For `live_active_subscription_tests`, obtain an activated subscription ID by following [docs/ActivateSubscription.md](docs/ActivateSubscription.md).
+
+## Notes
+- The `live_active_subscription_tests` group includes tests like `testUpdateSubscription`, `testReviseSubscription`, `testSuspendSubscription`, `testActivateSubscription`, and `testCancelSubscription`, requiring an active subscription.
+- Screenshots for setup and activation are in `docs/resources/`.
+- For issues, verify configurations and credentials in the PayPal Developer Dashboard.
