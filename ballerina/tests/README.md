@@ -25,7 +25,7 @@ To execute tests on the mock server, ensure that the `isLiveServer` configuratio
 
 You can configure this variable in the `Config.toml` file in the `tests` directory or set it as an environment variable.
 
-### Using a `Config.toml` file
+### Configure the `Config.toml` file
 
 Create a `Config.toml` file in the `tests` directory with the following content:
 
@@ -35,27 +35,15 @@ clientId = "DUMMY_CLIENT_ID"
 clientSecret = "DUMMY_CLIENT_SECRET"
 ```
 
-### Using Environment Variables
-
-#### Linux or macOS
+Then, run the following command to run the tests:
 
 ```bash
-export IS_LIVE_SERVER=false
-export CLIENT_ID="DUMMY_CLIENT_ID"
-export CLIENT_SECRET="DUMMY_CLIENT_SECRET"
-```
-
-#### Windows
-
-```cmd
-setx IS_LIVE_SERVER false
-setx CLIENT_ID DUMMY_CLIENT_ID
-setx CLIENT_SECRET DUMMY_CLIENT_SECRET
+./gradlew clean test
 ```
 
 ## Running Tests Against PayPal Sandbox API
 
-### Using a `Config.toml` file
+### Configure the `Config.toml` file
 
 Create a `Config.toml` file in the `tests` directory and add your PayPal sandbox credentials:
 
@@ -65,32 +53,6 @@ clientId = "<your-paypal-sandbox-client-id>"
 clientSecret = "<your-paypal-sandbox-client-secret>"
 # Optional: For some tests, you may need an activated subscription ID
 testActivatedSubscriptionId = "<your-activated-subscription-id>"
-```
-
-Then, run the following command to run the tests:
-
-```bash
-./gradlew clean test
-```
-
-### Using Environment Variables
-
-#### Linux or macOS
-
-```bash
-export IS_LIVE_SERVER=true
-export CLIENT_ID="<your-paypal-sandbox-client-id>"
-export CLIENT_SECRET="<your-paypal-sandbox-client-secret>"
-export TEST_ACTIVATED_SUBSCRIPTION_ID="<your-activated-subscription-id>"
-```
-
-#### Windows
-
-```cmd
-setx IS_LIVE_SERVER true
-setx CLIENT_ID <your-paypal-sandbox-client-id>
-setx CLIENT_SECRET <your-paypal-sandbox-client-secret>
-setx TEST_ACTIVATED_SUBSCRIPTION_ID <your-activated-subscription-id>
 ```
 
 Then, run the following command to run the tests:
