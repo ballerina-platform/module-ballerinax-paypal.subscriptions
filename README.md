@@ -45,7 +45,7 @@ To use the `paypal.subscriptions` connector in your Ballerina application, updat
 Import the `paypal.subscriptions` module.
 
 ```ballerina
-import ballerinax/paypal.subscriptions;
+import ballerinax/paypal.subscriptions as paypal;
 ```
 
 ### Step 2: Instantiate a New Connector
