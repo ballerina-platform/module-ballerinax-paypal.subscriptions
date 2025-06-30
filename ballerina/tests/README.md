@@ -76,8 +76,6 @@ For example, to run only the mock tests:
 ./gradlew clean test -Pgroups=mock_tests
 ```
 
-For `live_active_subscription_tests`, obtain an activated subscription ID by following [docs/ActivateSubscription.md](docs/ActivateSubscription.md).
-
 ## Notes
 
 - The `live_active_subscription_tests` group includes tests like `testUpdateSubscription`, `testReviseSubscription`, `testSuspendSubscription`, `testActivateSubscription`, and `testCancelSubscription`, requiring an active subscription.
