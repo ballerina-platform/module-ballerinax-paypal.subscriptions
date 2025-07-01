@@ -16,7 +16,7 @@ To use the PayPal Subscriptions connector, you must have access to a [PayPal Dev
 
 3. Create a Business account.
    > Note: Some PayPal options and features may vary by region or country; check availability before creating an account.
-   
+
    ![Create business account](https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-paypal.subscriptions/main/docs/setup/resources/create-account.png)
 
 ### Step 2: Create a REST API App
@@ -123,3 +123,4 @@ The `PayPal Subscriptions` connector provides practical examples illustrating us
 
 1. [**Create and List Plans**](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/tree/main/examples/create-and-list-plans): Create a subscription plan and list all available plans.
 2. [**Monitor and Manage Subscription Status**](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/tree/main/examples/monitor-and-manage-subscription): Retrieve a subscription’s status and suspend or reactivate it based on its state.
+3. [**Manage Premium Subscription**](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/tree/main/examples/manage-premium-subscription): Create a subscription plan, enroll a customer, and retrieve subscription details for a premium membership.

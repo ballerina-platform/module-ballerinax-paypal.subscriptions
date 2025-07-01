@@ -4,6 +4,7 @@ The `ballerinax/paypal.subscriptions` connector provides practical examples illu
 
 1. [Create and list plans](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/tree/main/examples/create-and-list-plans/create-and-list-plans.md) - Create a subscription plan and list all available plans for subscription-based services.
 2. [Monitor and manage subscription status](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/tree/main/examples/monitor-and-manage-subscription/monitor-and-manage-subscription.md) - Retrieve a subscription's status and suspend or reactivate it based on its current state.
+3. [**Manage Premium Subscription**](https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions/tree/main/examples/manage-premium-subscription) - Create a subscription plan, enroll a customer, and retrieve subscription details for a premium membership.
 
 ## Prerequisites
 
@@ -13,7 +14,7 @@ The `ballerinax/paypal.subscriptions` connector provides practical examples illu
     ```toml
     clientId = "<your_client_id>"
     clientSecret = "<your_client_secret>"
-    productId = "<your_product_id>"  # Required for create-and-list-plans
+    productId = "<your_product_id>"  # Required for create-and-list-plans, manage-premium-subscription
     subscriptionId = "<your_subscription_id>"  # Required for monitor-and-manage-subscription
     ```
 
