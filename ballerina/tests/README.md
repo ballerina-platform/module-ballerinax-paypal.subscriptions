@@ -8,7 +8,7 @@ To run the tests for this PayPal Subscriptions Ballerina connector, you need:
 
 For more information on obtaining credentials, refer to the [PayPal Developer Documentation](https://developer.paypal.com/api/rest/).
 
-## Test Environments
+## Test environments
 
 There are three test environments for running the PayPal Subscriptions connector tests:
 
@@ -20,13 +20,13 @@ There are three test environments for running the PayPal Subscriptions connector
 
 You can run tests in either environment. Each group has its own compatible set of tests.
 
-## Running Tests in the Mock Server
+## Running Tests in the mock server
 
 To execute tests on the mock server, ensure that the `isLiveServer` configuration is set to `false` or is unset.
 
 You can configure this variable in the `Config.toml` file in the `tests` directory or set it as an environment variable.
 
-### Using a `Config.toml` File
+### Using a `Config.toml` file
 
 Create a `Config.toml` file in the `tests` directory with the following content:
 
@@ -42,9 +42,9 @@ Then, run the following command to run the tests:
 ./gradlew clean test
 ```
 
-## Running Tests Against PayPal Sandbox API
+## Running tests against PayPal sandbox API
 
-### Using a `Config.toml` File
+### Using a `Config.toml` file
 
 Create a `Config.toml` file in the `tests` directory and add your PayPal sandbox credentials:
 
@@ -62,7 +62,7 @@ Then, run the following command to run the tests:
 ./gradlew clean test
 ```
 
-## Running Specific Groups or Test Cases
+## Running specific groups or test cases
 
 To run only certain test groups or individual test cases, pass the `-Pgroups` property:
 
