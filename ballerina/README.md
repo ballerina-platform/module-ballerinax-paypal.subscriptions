@@ -8,18 +8,18 @@ The `ballerinax/paypal.subscriptions` package provides a Ballerina connector for
 
 To use the PayPal Subscriptions connector, you must have access to a [PayPal Developer account](https://developer.paypal.com/).
 
-### Step 1: Create a Business Account
+### Step 1: Create a business account
 
 1. Open the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard).
 
    ![Sandbox accounts](https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-paypal.subscriptions/main/docs/setup/resources/sandbox-accounts.png)
 
-3. Create a Business account.
-   > Note: Some PayPal options and features may vary by region or country; check availability before creating an account.
+3. Create a business account.
+   > **Note:** Some PayPal options and features may vary by region or country; check availability before creating an account.
 
    ![Create business account](https://raw.githubusercontent.com/ballerina-platform/module-ballerinax-paypal.subscriptions/main/docs/setup/resources/create-account.png)
 
-### Step 2: Create a REST API App
+### Step 2: Create a REST API app
 
 1. Navigate to the "Apps and Credentials" tab and create a new merchant app.
 2. Provide a name for the application and select the Business account created earlier.
@@ -35,7 +35,7 @@ To use the PayPal Subscriptions connector, you must have access to a [PayPal Dev
 
 To use the `paypal.subscriptions` connector in your Ballerina application, update the `.bal` file as follows:
 
-### Step 1: Import the Module
+### Step 1: Import the module
 
 Import the `paypal.subscriptions` module.
 
@@ -43,7 +43,7 @@ Import the `paypal.subscriptions` module.
 import ballerinax/paypal.subscriptions as paypal;
 ```
 
-### Step 2: Instantiate a New Connector
+### Step 2: Instantiate a new connector
 
 1. Create a `Config.toml` file and configure the obtained credentials and URLs:
    ```toml
@@ -70,9 +70,9 @@ import ballerinax/paypal.subscriptions as paypal;
    }, serviceUrl);
    ```
 
-### Step 3: Invoke a Connector Operation
+### Step 3: Invoke a connector operation
 
-#### Create a Subscription Plan
+#### Create a subscription plan
 
 ```ballerina
 public function main() returns error? {

@@ -22,7 +22,6 @@ The `live_active_subscription_tests` group in `tests.bal` requires an active sub
                  "rel": "approve",
                  "method": "GET"
              },
-             ...
          ]
      }
      ```
