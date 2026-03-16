@@ -1,8 +1,15 @@
 ## Overview
 
-[PayPal](https://www.paypal.com/) is a global online payment platform enabling individuals and businesses to securely send and receive money, process transactions, and access merchant services across multiple currencies.
+[PayPal](https://www.paypal.com/) is a global online payment platform that enables individuals and businesses to securely send and receive money, process transactions, and access merchant services.
 
-The `ballerinax/paypal.subscriptions` package provides a Ballerina connector for interacting with the [PayPal Subscriptions API v1](https://developer.paypal.com/docs/api/subscriptions/v1/), allowing you to create, manage, and monitor subscription-based billing plans and subscriptions in your Ballerina applications.
+The PayPal Subscriptions connector offers APIs to connect and interact with the [PayPal Subscriptions API v1](https://developer.paypal.com/docs/api/subscriptions/v1/), enabling the creation, management, and monitoring of subscription-based billing plans and subscriptions.
+
+### Key Features
+
+- Create and manage subscription plans programmatically
+- Support for PayPal Subscriptions API v1
+- Monitor and track recurring billing status
+- Manage customer subscriptions and payment cycles
 
 ## Setup Guide
 
