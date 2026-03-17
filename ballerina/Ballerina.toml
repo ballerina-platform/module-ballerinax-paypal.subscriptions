@@ -2,10 +2,10 @@
 distribution = "2201.12.0"
 org = "ballerinax"
 name = "paypal.subscriptions"
-version = "1.0.1"
+version = "1.0.2"
 license = ["Apache-2.0"]
 authors = ["Ballerina"]
-keywords = ["Subscriptions", "Plans", "Billing", "Payments", "Recurring", "Vendor/Paypal", "Area/Finance", "Type/Connector"]
+keywords = ["Subscriptions", "Plans", "Billing", "Payments", "Recurring", "Vendor/PayPal", "Area/Finance & Accounting", "Type/Connector"]
 icon = "icon.png"
 
 repository = "https://github.com/ballerina-platform/module-ballerinax-paypal.subscriptions"
